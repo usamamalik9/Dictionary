@@ -8,7 +8,22 @@ namespace WindowsFormsApp1
 {
     public class Node
     {
-       
+        public class Node
+        {
+            public string data { get; set; }
+            public Node left { get; set; }
+            public Node right { get; set; }
 
-    }
+            public Node()
+            {
+                data = "";
+                left = null;
+                right = null;
+            }
+            public Node(string s)
+            {
+                this.data = s;
+            }
+
+        }
 }
