@@ -3,76 +3,68 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 
-
-namespace WindowsFormsApp1
+namespace WindowsFormsApplication2
 {
     public partial class Form1 : Form
     {
-        public Tree temp = new Tree();
+        private Tree temp = new Tree();
         public Form1()
         {
             InitializeComponent();
         }
         private void LoadDictionary()
         {
-            string line;
-
-            System.IO.StreamReader file = new System.IO.StreamReader(@"E:\New folder\4th semester\DSA\DSA\spell corector\spell corector\WORDS.txt");
-            while ((line = file.ReadLine()) != null)
+            string[] words = File.ReadAllLines("WORDS.txt");
+            foreach(string a in words)
             {
-                temp.InsertData(line);
+                temp.InsertData(a);
             }
-
-            file.Close();
-            
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             LoadDictionary();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        public string WordSEARCh(Node node, string s)
         {
-            string a = textBox1.Text;
-            if (Search(temp.root, a)==true)
-            {
-                label4.Text = " Word Found";
-            }
-            else
-            {
-                label4.Text = "Word not Found";
-            }
+            if (node == null)
+                return "not found";
+            else if (s.CompareTo(node.data) < 0)
+                return WordSEARCh(node.left, s);
+            else if (s.CompareTo(node.data) > 0)
+                return WordSEARCh(node.right, s);
 
+            return "found";
         }
-        public bool Search(Node a, string x)
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string test = textBox1.Text;
+            if(WordSEARCh(temp.root,test)=="found")
+
+            {
+                MessageBox.Show("Correct Word");
+            }
+            else
+            {
+                MessageBox.Show("not found");
+            }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
-            if (a == null)
-                return false;
-            if (string.Compare(x, a.data) == 0)
-            {
-
-                return true;
-
-            }
-
-            if (string.Compare(x, a.data) < 0)
-                return Search(a.left, x);
-            else
-                return Search(a.right, x);
         }
     }
 }
